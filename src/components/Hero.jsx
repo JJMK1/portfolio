@@ -1,6 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Download, ArrowRight, Mail, Phone, MapPin } from 'lucide-react'
+import TextType from './TextType';
+
 
 const Hero = () => {
   const scrollToProjects = () => {
@@ -30,15 +32,22 @@ const Hero = () => {
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left space-y-8"
           >
-            {/* Greeting */}
+              {/* Greeting */}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
               className="text-primary-400 font-semibold text-lg tracking-wide"
             >
-              Hello, I'm
+              <TextType
+                text="Hello, I'm"
+                typingSpeed={50}
+                className="inline-block text-primary-400"
+                textColors={['#C084FC']}
+              />
             </motion.p>
+
+            
 
             {/* Name */}
             <motion.h1
@@ -47,18 +56,30 @@ const Hero = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
             >
-              Jericho E. Tupaz
+              <TextType
+                text="Jericho E. Tupaz"
+                typingSpeed={130}
+                className="inline-block text-white"
+              />
             </motion.h1>
 
-            {/* Title */}
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="text-2xl md:text-3xl font-semibold gradient-text-strong"
-            >
-              Software Developer / OSINT Specialist
-            </motion.h2>
+            
+            
+      {/* Title */}
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.8 }}
+        className="text-2xl md:text-3xl font-semibold gradient-text-strong " 
+      >
+        <TextType
+          text="Software Developer / OSINT Specialist"
+          typingSpeed={60}
+          className="inline-block gradient-text-strong "
+          textColors={['#C084FC']}
+
+        />
+      </motion.h2>
 
             {/* Tagline */}
             <motion.p
@@ -66,6 +87,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
               className="text-lg md:text-xl text-gray-300 max-w-2xl leading-relaxed"
+              
             >
               Motivated IT professional specializing in software development, OSINT investigations, and data analysis.
             </motion.p>
