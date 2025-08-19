@@ -1,14 +1,15 @@
+// SmoothScroll.jsx
 import { useLayoutEffect, useRef, createContext, useContext } from "react";
 import { gsap } from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import ScrollSmoother from "gsap-trial/ScrollSmoother"; // swap to club build later
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const SmootherCtx = createContext(null);
 export const useSmoother = () => useContext(SmootherCtx);
 
-// A tiny helper so you can write <Parallax speed={0.85}>...</Parallax>
+// Helper so you can write: <Parallax speed={0.95} lag={0.1}>...</Parallax>
 export function Parallax({ speed, lag, as: Tag = "div", children, ...rest }) {
   return (
     <Tag data-speed={speed} data-lag={lag} {...rest}>
@@ -21,16 +22,19 @@ export default function SmoothScroll({ children }) {
   const smootherRef = useRef(null);
 
   useLayoutEffect(() => {
-    ScrollSmoother.get()?.kill(); // hot-reload safety
+    // hot-reload / duplicate-guard
+    ScrollSmoother.get()?.kill();
+
     smootherRef.current = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
-      smooth: 1.2,
-      effects: true,             // enables data-speed / data-lag
+      smooth: 1.2,            // feel free to tweak (higher = smoother)
+      effects: true,          // enables data-speed / data-lag on children
       normalizeScroll: true,
       ignoreMobileResize: true,
-      // smoothTouch: false,      // uncomment to disable on touch
+      // smoothTouch: false,   // uncomment to disable smoothing on touch
     });
+
     return () => smootherRef.current?.kill();
   }, []);
 
