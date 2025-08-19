@@ -4,10 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   },
+  "packageManager": "npm@10",
   "scripts": {
     "dev": "vite",
+    "prebuild": "chmod +x node_modules/.bin/vite || true",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
