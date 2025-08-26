@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Twitter, Mail, ArrowUp } from 'lucide-react'
+import { Github, Linkedin, Instagram, Mail, ArrowUp } from 'lucide-react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -19,9 +19,9 @@ const Footer = () => {
   ]
 
   const socialLinks = [
-    { name: 'GitHub', icon: Github, href: '#', color: 'hover:text-gray-300' },
-    { name: 'LinkedIn', icon: Linkedin, href: '#', color: 'hover:text-blue-400' },
-    { name: 'Twitter', icon: Twitter, href: '#', color: 'hover:text-blue-400' },
+    { name: 'GitHub', icon: Github, href: 'https://github.com/JJMK1', color: 'hover:text-gray-300' },
+    { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/jericho-tupaz-668863269', color: 'hover:text-blue-400' },
+    { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/strwbrrybluu', color: 'hover:text-blue-400' },
     { name: 'Email', icon: Mail, href: 'mailto:jerichoescorial16@gmail.com', color: 'hover:text-primary-400' }
   ]
 

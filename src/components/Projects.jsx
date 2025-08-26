@@ -1,8 +1,20 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ExternalLink, Github, Eye } from 'lucide-react'
+import { Parallax, useSmoother } from '../components/SmoothScroll' // ⬅️ adjust path if needed
 
 const Projects = () => {
+  const smootherRef = useSmoother()
+  const scrollTo = (hash) => {
+    const target = document.querySelector(hash)
+    if (!target) return
+    const nav = document.querySelector('nav')
+    const navH = nav?.offsetHeight ?? 80
+    const y = target.getBoundingClientRect().top + window.scrollY - navH
+    const smoother = smootherRef?.current
+    smoother ? smoother.scrollTo(y, true) : window.scrollTo({ top: y, behavior: 'smooth' })
+  }
+
   const projects = [
     {
       title: 'OSINT Dashboard',
@@ -75,146 +87,161 @@ const Projects = () => {
   return (
     <section id="projects" className="section-padding bg-gradient-section">
       <div className="container-custom">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Featured <span className="gradient-text">Projects</span>
-          </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            A showcase of my recent work and technical capabilities
-          </p>
-        </motion.div>
+        {/* Title (slightly faster = foreground) */}
+        <Parallax speed={1.06}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, amount: 0.25 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Featured <span className="gradient-text">Projects</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              A showcase of my recent work and technical capabilities
+            </p>
+          </motion.div>
+        </Parallax>
 
-        <div className="grid-cards">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="card card-hover group"
-            >
-              {/* Project Image */}
-              <div className="relative mb-6 overflow-hidden rounded-xl">
-                <div className="w-full h-48 bg-gradient-to-br from-dark-700 to-dark-800 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-primary-500/20 rounded-full mx-auto mb-4 flex items-center justify-center">
-                      <Eye size={24} className="text-primary-400" />
+        {/* Cards grid (neutral) */}
+        <Parallax speed={1.0}>
+          <div className="grid-cards">
+            {projects.map((project, index) => (
+              // each card gets a tiny variance for depth and a small lag
+              <Parallax key={project.title} speed={1.02 + (index % 3) * 0.02} lag={0.06 + (index % 3) * 0.04} as="div">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  className="card card-hover group"
+                >
+                  {/* Project Image */}
+                  <div className="relative mb-6 overflow-hidden rounded-xl">
+                    <div className="w-full h-48 bg-gradient-to-br from-dark-700 to-dark-800 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-16 h-16 bg-primary-500/20 rounded-full mx-auto mb-4 flex items-center justify-center">
+                          <Eye size={24} className="text-primary-400" />
+                        </div>
+                        <p className="text-gray-400 text-sm">Project Preview</p>
+                        <p className="text-gray-500 text-xs">{project.title}</p>
+                      </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Project Preview</p>
-                    <p className="text-gray-500 text-xs">{project.title}</p>
-                  </div>
-                </div>
-                
-                {/* Category Badge */}
-                <div className="absolute top-4 left-4">
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getCategoryColor(project.category)}`}>
-                    {project.category}
-                  </span>
-                </div>
 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                  <div className="p-4 w-full">
-                    <div className="flex gap-2">
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getCategoryColor(project.category)}`}>
+                        {project.category}
+                      </span>
+                    </div>
+
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                      <div className="p-4 w-full">
+                        <div className="flex gap-2">
+                          <a
+                            href={project.liveDemo}
+                            target="_blank" rel="noreferrer"
+                            className="flex-1 bg-primary-500/20 hover:bg-primary-500/30 text-primary-300 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                          >
+                            <ExternalLink size={16} />
+                            Live Demo
+                          </a>
+                          <a
+                            href={project.sourceCode}
+                            target="_blank" rel="noreferrer"
+                            className="flex-1 bg-dark-700/50 hover:bg-dark-600/50 text-gray-300 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                          >
+                            <Github size={16} />
+                            Source
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Project Content */}
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-white group-hover:text-primary-400 transition-colors duration-300">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-gray-300 leading-relaxed text-sm">
+                      {project.description}
+                    </p>
+
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-2">
+                      {project.tech.map((tech, techIndex) => (
+                        <motion.span
+                          key={`${project.title}-${tech}`}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.3, delay: techIndex * 0.05 }}
+                          viewport={{ once: true }}
+                          className="skill-chip text-xs"
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3 pt-2">
                       <a
                         href={project.liveDemo}
-                        className="flex-1 bg-primary-500/20 hover:bg-primary-500/30 text-primary-300 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                        target="_blank" rel="noreferrer"
+                        className="btn-outline flex-1 flex items-center justify-center gap-2 text-sm py-2"
                       >
                         <ExternalLink size={16} />
-                        Live Demo
+                        View Demo
                       </a>
                       <a
                         href={project.sourceCode}
-                        className="flex-1 bg-dark-700/50 hover:bg-dark-600/50 text-gray-300 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2"
+                        target="_blank" rel="noreferrer"
+                        className="btn-secondary flex-1 flex items-center justify-center gap-2 text-sm py-2"
                       >
                         <Github size={16} />
-                        Source
+                        Source Code
                       </a>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Project Content */}
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold text-white group-hover:text-primary-400 transition-colors duration-300">
-                  {project.title}
-                </h3>
-                
-                <p className="text-gray-300 leading-relaxed text-sm">
-                  {project.description}
-                </p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((tech, techIndex) => (
-                    <motion.span
-                      key={tech}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, delay: techIndex * 0.05 }}
-                      viewport={{ once: true }}
-                      className="skill-chip text-xs"
-                    >
-                      {tech}
-                    </motion.span>
-                  ))}
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-3 pt-2">
-                  <a
-                    href={project.liveDemo}
-                    className="btn-outline flex-1 flex items-center justify-center gap-2 text-sm py-2"
-                  >
-                    <ExternalLink size={16} />
-                    View Demo
-                  </a>
-                  <a
-                    href={project.sourceCode}
-                    className="btn-secondary flex-1 flex items-center justify-center gap-2 text-sm py-2"
-                  >
-                    <Github size={16} />
-                    Source Code
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <div className="card max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Interested in Working Together?
-            </h3>
-            <p className="text-gray-300 leading-relaxed mb-6">
-              I'm always open to discussing new opportunities and exciting projects. 
-              Let's create something amazing together!
-            </p>
-            <a
-              href="#contact"
-              className="btn-primary inline-flex items-center gap-2"
-            >
-              Get In Touch
-              <ExternalLink size={20} />
-            </a>
+                </motion.div>
+              </Parallax>
+            ))}
           </div>
-        </motion.div>
+        </Parallax>
+
+        {/* Call to Action (smooth-scroll to contact with offset) */}
+        <Parallax speed={1.04}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            viewport={{ once: true, amount: 0.25 }}
+            className="text-center mt-16"
+          >
+            <div className="card max-w-2xl mx-auto">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Interested in Working Together?
+              </h3>
+              <p className="text-gray-300 leading-relaxed mb-6">
+                I&apos;m always open to discussing new opportunities and exciting projects.
+                Let&apos;s create something amazing together!
+              </p>
+              <a
+                href="#contact"
+                onClick={(e) => { e.preventDefault(); scrollTo('#contact') }}
+                className="btn-primary inline-flex items-center gap-2"
+              >
+                Get In Touch
+                <ExternalLink size={20} />
+              </a>
+            </div>
+          </motion.div>
+        </Parallax>
       </div>
     </section>
   )
