@@ -1,3 +1,23 @@
 {
-    "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+
+  // Treat CSS as PostCSS so Tailwind directives work
+  "files.associations": {
+    "*.css": "postcss"
+  },
+
+  // Ignore VS Code linter warnings for @tailwind/@apply
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+
+  // ✅ Prettier setup
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  // Ensure Prettier uses Tailwind plugin for class sorting
+  "prettier.plugins": ["prettier-plugin-tailwindcss"]
 }

@@ -250,3 +250,27 @@
 .text-type__cursor--hidden {
   display: none;
 }
+
+.animated-gradient-text {
+  @apply bg-clip-text text-transparent;
+  -webkit-background-clip: text; /* Safari */
+  background-image: linear-gradient(
+    to right,
+    var(--gt-stops, #c084fc, #ffffff, #a855f7, #ffffff, #c084fc)
+  );
+  background-size: 300% 300%;
+  animation: animatedgradient var(--gt-speed, 8s) ease infinite alternate;
+}
+
+@keyframes animatedgradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* Boost legibility slightly on dark backgrounds */
+.card p, .card .skill-chip { text-shadow: 0 0 1px rgba(0,0,0,0.15); }
+
+/* If your .skill-chip isn't defined, this is a nice default: */
+.skill-chip {
+  @apply px-2.5 py-1 rounded-lg bg-dark-700/50 border border-white/10;
+}
