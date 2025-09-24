@@ -8,6 +8,7 @@ import Projects from "./components/Projects";
 import Certifications from "./components/Certifications";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import ChatWidget from "./components/ChatWidget.jsx";
 
 import SmoothScroll from "./components/SmoothScroll";
 
@@ -16,6 +17,9 @@ function App() {
     <div className="min-h-screen bg-dark-900">
       {/* Keep fixed/sticky nav OUTSIDE smooth-content */}
       <Navbar />
+
+      {/* ✅ Keep the chat widget OUTSIDE SmoothScroll so it's not clipped or shifted */}
+      <ChatWidget agentName="Jek" avatarUrl="/Frame1.png" position="right" />
 
       <SmoothScroll>
         <main>
