@@ -1,4 +1,4 @@
-# Jericho E. Tupaz - Portfolio Website
+# Jericho Tupaz - Portfolio Website
 
 A modern, responsive personal portfolio website built with React, Vite, and TailwindCSS. Features a dark UI with violet accents, smooth animations, and a professional design showcasing software development and OSINT expertise.
 
@@ -200,8 +200,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📞 Contact
 
 - **Email**: jerichoescorial16@gmail.com
-- **Phone**: 09214051021
-- **Location**: Pook Libis, U.P. Campus, Diliman, Quezon City
+- **Phone**: 0921405****
+- **Location**: Quezon City
 
 ---
 
